@@ -1,351 +1,696 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>צ'קליסט אבחון לגיל הגן</title>
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f5f4f1;--card:rgba(255,255,255,.74);--ink:#26333b;--mute:#6a7a82;--line:rgba(60,90,100,.16);--field:rgba(255,255,255,.8);--acc:#467f5f;--acc2:#b8527a;--acc-ink:#fff;--c1:#467f5f;--c2:#b8527a;--c3:#6a7f2c;--c4:#9c4467;--w1:#93c9a6;--w2:#ee9fb9;--w3:#b6d490;--w4:#f0adc2;--wo:.55;--do:.17;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a1e;--card:rgba(30,38,44,.78);--ink:#e9eff1;--mute:#98aab2;--line:rgba(180,210,220,.16);--field:rgba(20,27,32,.8);--acc:#7cc79a;--acc2:#e58fae;--acc-ink:#0f1a20;--c1:#7cc79a;--c2:#e58fae;--c3:#b4d076;--c4:#e08aa6;--wo:.24;--do:.13}}
-:root[data-theme="dark"]{--bg:#141a1e;--card:rgba(30,38,44,.78);--ink:#e9eff1;--mute:#98aab2;--line:rgba(180,210,220,.16);--field:rgba(20,27,32,.8);--acc:#7cc79a;--acc2:#e58fae;--acc-ink:#0f1a20;--c1:#7cc79a;--c2:#e58fae;--c3:#b4d076;--c4:#e08aa6;--wo:.24;--do:.13}
-*{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
-body{margin:0;color:var(--ink);font-family:Heebo,Arial,sans-serif;line-height:1.6;position:relative;min-height:100vh}
-body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;opacity:var(--wo);filter:blur(36px);
- background:radial-gradient(38% 30% at 12% 8%,var(--w1),transparent 70%),radial-gradient(34% 28% at 92% 22%,var(--w2),transparent 70%),radial-gradient(40% 32% at 8% 58%,var(--w3),transparent 70%),radial-gradient(36% 30% at 95% 78%,var(--w4),transparent 70%),radial-gradient(30% 24% at 40% 98%,var(--w2),transparent 70%)}
-main{max-width:740px;margin:0 auto;padding:28px 16px 70px}
-h1{font-family:"Frank Ruhl Libre",Georgia,serif;font-weight:700;font-size:2.4rem;line-height:1.2;margin:10px 0 6px;position:relative;display:inline-block}
-h1::after{content:"";position:absolute;inset-inline:-6px;bottom:-2px;height:12px;border-radius:50%;background:linear-gradient(to left,var(--c1),var(--c2),var(--c3),var(--c4));opacity:.28;filter:blur(5px);z-index:-1}
-.deco{position:absolute;inset:0;overflow:hidden;z-index:-1;pointer-events:none}
-.deco svg{position:absolute;opacity:var(--do);fill:currentColor}
-.g{color:var(--c1)}.p{color:var(--c2)}.o{color:var(--c3)}.b{color:var(--c4)}
-.lead{color:var(--mute);margin:0 0 22px;font-size:1.02rem}
-.card{background:var(--card);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:18px 14px 20px 14px;padding:16px 18px;margin-bottom:14px;box-shadow:0 6px 22px -12px rgba(50,80,95,.35)}
-.dom .card{background:linear-gradient(to left,color-mix(in srgb,var(--dc) 16%,transparent),transparent 45%),var(--card)}
-#tasks>.dom:nth-child(1){--dc:var(--c1)}#tasks>.dom:nth-child(2){--dc:var(--c2)}#tasks>.dom:nth-child(3){--dc:var(--c3)}#tasks>.dom:nth-child(4){--dc:var(--c4)}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.row>label{flex:1;min-width:150px;display:flex;flex-direction:column;font-size:.9rem;color:var(--mute);gap:4px}
-input,select,textarea{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:8px 11px;width:100%}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
-.task-head{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.task-head input{font-weight:700;font-size:1.05rem;border-color:transparent;background:transparent;padding-inline:0}
-.task-head input:focus{background:var(--field);padding-inline:11px}
-.x{background:none;border:0;color:var(--mute);font-size:1.3rem;cursor:pointer;padding:4px 8px;border-radius:8px}
-.x:hover{color:var(--ink)}
-.seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.seg button{font:inherit;border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:999px;padding:5px 15px;cursor:pointer;transition:background .15s,color .15s}
-.dom .seg button[aria-pressed="true"]{background:var(--dc);color:var(--acc-ink);border-color:var(--dc)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dom .seg button[aria-pressed="true"]{color:#10181d}}
-:root[data-theme="dark"] .dom .seg button[aria-pressed="true"]{color:#10181d}
-textarea{min-height:42px;resize:vertical}
-.dom h2{font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.55rem;color:var(--dc);margin:34px 0 14px;position:relative;display:inline-block}
-.dom h2::after{content:"";position:absolute;inset-inline:-10px;bottom:1px;height:11px;border-radius:50%;background:var(--dc);opacity:.22;filter:blur(4px);z-index:-1}
-.dom>.btn{margin-bottom:6px}
-.sub{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px dashed var(--line)}
-.sub .seg{margin:0;flex-shrink:0}
-.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:11px 22px;cursor:pointer;background:linear-gradient(to left,var(--acc),var(--acc2));color:var(--acc-ink);box-shadow:0 8px 18px -10px var(--acc)}
-.btn:disabled{opacity:.6;cursor:not-allowed}
-.btn.ghost{background:transparent;color:var(--dc,var(--acc));border:1px solid var(--dc,var(--acc));box-shadow:none}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-#outCard{border-radius:20px 14px 18px 14px;padding:22px 24px;background:linear-gradient(to left,color-mix(in srgb,var(--c2) 14%,transparent),transparent 40%),var(--card)}
-#out{font-size:1.06rem;line-height:1.95;white-space:pre-wrap}
-#out h3{font-family:"Frank Ruhl Libre",Georgia,serif;font-size:1.3rem;margin:20px 0 2px;color:var(--acc)}
-#out p{margin:0 0 8px}
-#msg{color:var(--mute);font-size:.9rem;min-height:1.4em;align-self:center}
-</style>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>צ'קליסט אבחון לגיל הגן</title>
+    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        
+        :root {
+            --bg: #f5f4f1;
+            --card: rgba(255,255,255,.74);
+            --ink: #26333b;
+            --mute: #6a7a82;
+            --line: rgba(60,90,100,.16);
+            --field: rgba(255,255,255,.8);
+            --acc: #467f5f;
+            --acc2: #b8527a;
+            --acc-ink: #fff;
+            --c1: #467f5f;
+            --c2: #b8527a;
+            --c3: #6a7f2c;
+            --c4: #9c4467;
+            --w1: #93c9a6;
+            --w2: #ee9fb9;
+            --w3: #b6d490;
+            --w4: #f0adc2;
+            --wo: .55;
+            --do: .17;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top,0px);
+            padding-bottom: env(safe-area-inset-bottom,0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #141a1e;
+                --card: rgba(30,38,44,.78);
+                --ink: #e9eff1;
+                --mute: #98aab2;
+                --line: rgba(180,210,220,.16);
+                --field: rgba(20,27,32,.8);
+                --acc: #7cc79a;
+                --acc2: #e58fae;
+                --acc-ink: #0f1a20;
+                --c1: #7cc79a;
+                --c2: #e58fae;
+                --c3: #b4d076;
+                --c4: #e08aa6;
+                --wo: .24;
+                --do: .13
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #141a1e;
+            --card: rgba(30,38,44,.78);
+            --ink: #e9eff1;
+            --mute: #98aab2;
+            --line: rgba(180,210,220,.16);
+            --field: rgba(20,27,32,.8);
+            --acc: #7cc79a;
+            --acc2: #e58fae;
+            --acc-ink: #0f1a20;
+            --c1: #7cc79a;
+            --c2: #e58fae;
+            --c3: #b4d076;
+            --c4: #e08aa6;
+            --wo: .24;
+            --do: .13
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top,0px);
+            background: var(--bg)
+        }
+
+        body {
+            margin: 0;
+            color: var(--ink);
+            font-family: Heebo,Arial,sans-serif;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh
+        }
+
+            body::before {
+                content: "";
+                position: fixed;
+                inset: -10%;
+                z-index: -1;
+                pointer-events: none;
+                opacity: var(--wo);
+                filter: blur(36px);
+                background: radial-gradient(38% 30% at 12% 8%,var(--w1),transparent 70%),radial-gradient(34% 28% at 92% 22%,var(--w2),transparent 70%),radial-gradient(40% 32% at 8% 58%,var(--w3),transparent 70%),radial-gradient(36% 30% at 95% 78%,var(--w4),transparent 70%),radial-gradient(30% 24% at 40% 98%,var(--w2),transparent 70%)
+            }
+
+        main {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 28px 16px 70px
+        }
+
+        h1 {
+            font-family: "Frank Ruhl Libre",Georgia,serif;
+            font-weight: 700;
+            font-size: 2.4rem;
+            line-height: 1.2;
+            margin: 10px 0 6px;
+            position: relative;
+            display: inline-block
+        }
+
+            h1::after {
+                content: "";
+                position: absolute;
+                inset-inline: -6px;
+                bottom: -2px;
+                height: 12px;
+                border-radius: 50%;
+                background: linear-gradient(to left,var(--c1),var(--c2),var(--c3),var(--c4));
+                opacity: .28;
+                filter: blur(5px);
+                z-index: -1
+            }
+
+        .lead {
+            color: var(--mute);
+            margin: 0 0 22px;
+            font-size: 1.02rem
+        }
+
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--line);
+            border-radius: 18px 14px 20px 14px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 6px 22px -12px rgba(50,80,95,.35)
+        }
+
+        .dom .card {
+            background: linear-gradient(to left,color-mix(in srgb,var(--dc) 16%,transparent),transparent 45%),var(--card)
+        }
+
+        #tasks > .dom:nth-child(1) {
+            --dc: var(--c1)
+        }
+
+        #tasks > .dom:nth-child(2) {
+            --dc: var(--c2)
+        }
+
+        #tasks > .dom:nth-child(3) {
+            --dc: var(--c3)
+        }
+
+        #tasks > .dom:nth-child(4) {
+            --dc: var(--c4)
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+            .row > label {
+                flex: 1;
+                min-width: 150px;
+                display: flex;
+                flex-direction: column;
+                font-size: .9rem;
+                color: var(--mute);
+                gap: 4px
+            }
+
+        input, select, textarea {
+            font: inherit;
+            color: var(--ink);
+            background: var(--field);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 8px 11px;
+            width: 100%
+        }
+
+            input:focus, select:focus, textarea:focus, button:focus-visible {
+                outline: 2px solid var(--acc);
+                outline-offset: 1px
+            }
+
+        .task-head {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px
+        }
+
+            .task-head input {
+                font-weight: 700;
+                font-size: 1.05rem;
+                border-color: transparent;
+                background: transparent;
+                padding-inline: 0
+            }
+
+                .task-head input:focus {
+                    background: var(--field);
+                    padding-inline: 11px
+                }
+
+        .x {
+            background: none;
+            border: 0;
+            color: var(--mute);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px
+        }
+
+            .x:hover {
+                color: var(--ink)
+            }
+
+        .seg {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px
+        }
+
+            .seg button {
+                font: inherit;
+                border: 1px solid var(--line);
+                background: var(--field);
+                color: var(--ink);
+                border-radius: 999px;
+                padding: 5px 15px;
+                cursor: pointer;
+                transition: background .15s,color .15s
+            }
+
+        .dom .seg button[aria-pressed="true"] {
+            background: var(--dc);
+            color: var(--acc-ink);
+            border-color: var(--dc)
+        }
+
+        textarea {
+            min-height: 42px;
+            resize: vertical
+        }
+
+        .dom h2 {
+            font-family: "Frank Ruhl Libre",Georgia,serif;
+            font-size: 1.55rem;
+            color: var(--dc);
+            margin: 34px 0 14px;
+            position: relative;
+            display: inline-block
+        }
+
+            .dom h2::after {
+                content: "";
+                position: absolute;
+                inset-inline: -10px;
+                bottom: 1px;
+                height: 11px;
+                border-radius: 50%;
+                background: var(--dc);
+                opacity: .22;
+                filter: blur(4px);
+                z-index: -1
+            }
+
+        .dom > .btn {
+            margin-bottom: 6px
+        }
+
+        .sub {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 0;
+            border-top: 1px dashed var(--line)
+        }
+
+            .sub .seg {
+                margin: 0;
+                flex-shrink: 0
+            }
+
+        .btn {
+            font: inherit;
+            font-weight: 700;
+            border: 0;
+            border-radius: 12px;
+            padding: 11px 22px;
+            cursor: pointer;
+            background: linear-gradient(to left,var(--acc),var(--acc2));
+            color: var(--acc-ink);
+            box-shadow: 0 8px 18px -10px var(--acc)
+        }
+
+            .btn:disabled {
+                opacity: .6;
+                cursor: not-allowed
+            }
+
+            .btn.ghost {
+                background: transparent;
+                color: var(--dc,var(--acc));
+                border: 1px solid var(--dc,var(--acc));
+                box-shadow: none
+            }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 16px 0
+        }
+
+        #outCard {
+            border-radius: 20px 14px 18px 14px;
+            padding: 22px 24px;
+            background: linear-gradient(to left,color-mix(in srgb,var(--c2) 14%,transparent),transparent 40%),var(--card)
+        }
+
+        #out {
+            font-size: 1.06rem;
+            line-height: 1.95;
+            white-space: pre-wrap
+        }
+
+        #msg {
+            color: var(--mute);
+            font-size: .9rem;
+            min-height: 1.4em;
+            align-self: center
+        }
+    </style>
+    <!-- ספריית ההתחברות של גוגל דרייב -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-<div class="deco" aria-hidden="true">
-<svg width="0" height="0" style="position:absolute"><defs>
-<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
-<symbol id="hand" viewBox="0 0 100 120"><g filter="url(#rough)"><path d="M28 116C12 110 9 92 13 78c2-8 9-13 17-14h40c10 2 16 8 18 16 2 16-4 32-20 38z"/><ellipse cx="21" cy="48" rx="7" ry="20" transform="rotate(-12 21 48)"/><ellipse cx="40" cy="33" rx="7.5" ry="26" transform="rotate(-4 40 33)"/><ellipse cx="60" cy="32" rx="7.5" ry="27" transform="rotate(3 60 32)"/><ellipse cx="79" cy="44" rx="7" ry="22" transform="rotate(12 79 44)"/><ellipse cx="94" cy="84" rx="7" ry="17" transform="rotate(55 94 84)"/></g></symbol>
-<symbol id="blob" viewBox="0 0 100 100"><path filter="url(#rough)" d="M50 6C70 3 92 20 94 44c3 24-14 50-40 51C28 97 6 80 6 54 5 30 26 8 50 6z"/></symbol>
-<symbol id="splat" viewBox="0 0 100 100"><g filter="url(#rough)"><circle cx="40" cy="42" r="22"/><circle cx="76" cy="26" r="9"/><circle cx="82" cy="70" r="12"/><circle cx="20" cy="82" r="7"/><circle cx="58" cy="88" r="5"/><circle cx="12" cy="20" r="4"/></g></symbol>
-</defs></svg>
-<svg class="p" style="top:2%;left:-18px;width:120px;transform:rotate(-18deg)" viewBox="0 0 100 120"><use href="#hand"/></svg>
-<svg class="g" style="top:8%;right:-30px;width:150px" viewBox="0 0 100 100"><use href="#blob"/></svg>
-<svg class="g" style="top:21%;right:8px;width:96px;transform:rotate(14deg)" viewBox="0 0 100 120"><use href="#hand"/></svg>
-<svg class="p" style="top:33%;left:-40px;width:140px" viewBox="0 0 100 100"><use href="#splat"/></svg>
-<svg class="o" style="top:45%;right:-24px;width:130px;transform:rotate(-24deg)" viewBox="0 0 100 120"><use href="#hand"/></svg>
-<svg class="b" style="top:56%;left:-26px;width:120px" viewBox="0 0 100 100"><use href="#blob"/></svg>
-<svg class="g" style="top:68%;right:-10px;width:110px" viewBox="0 0 100 100"><use href="#splat"/></svg>
-<svg class="p" style="top:78%;left:-14px;width:110px;transform:rotate(20deg)" viewBox="0 0 100 120"><use href="#hand"/></svg>
-<svg class="o" style="top:90%;right:-34px;width:150px" viewBox="0 0 100 100"><use href="#blob"/></svg>
-<svg class="b" style="top:96%;left:12%;width:90px;transform:rotate(-10deg)" viewBox="0 0 100 120"><use href="#hand"/></svg>
-</div>
-<main>
-  <h1>צ'קליסט אבחון לגיל הגן</h1>
+    <main>
+        <h1>צ'קליסט אבחון לגיל הגן</h1>
 
-  <!-- אזור ההתחברות בלבד (מופיע לפני ההתחברות) -->
-  <div id="login_area" style="text-align: center; margin: 20px 0;">
-    <p>כדי להתחיל לאבחן ולשמור דוחות, אנא התחברי:</p>
-    <div id="g_id_onload"
-         data-client_id="844551604468-nia3hpvkl4p664jm9dup1vdl04mev2fk.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse">
-    </div>
-    <div class="g_id_signin" data-type="standard"></div>
-  </div>
+        <div id="main_app">
+            <p class="lead">גילאי 3 עד 6. סמני בכל פריט איך היה, ובסוף לחצי על "כתבי לי סיכום".</p>
 
-  <!-- כל תוכן האפליקציה (מוסתר עד לאחר ההתחברות) -->
-  <div id="main_app" hidden>
-    <p class="lead">גילאי 3 עד 6. סמני בכל פריט איך היה, ובסוף לחצי על "כתבי לי סיכום".</p>
+            <!-- טופס פרטי המאובחן -->
+            <div class="card row">
+                <label>שם הילד/ה<input id="name" placeholder="למשל: נועם"></label>
+                <label>תאריך לידה<input id="bdate" type="date"></label>
+                <label>מין<select id="gender"><option value="m">בן</option><option value="f">בת</option></select></label>
+                <label>תאריך<input id="date" type="date"></label>
+            </div>
 
-    <div class="card row">
-      <label>שם הילד/ה<input id="name" placeholder="למשל: נועם"></label>
-      <label>תאריך לידה<input id="bdate" type="date"></label>
-      <label>מין<select id="gender"><option value="m">בן</option><option value="f">בת</option></select></label>
-      <label>תאריך<input id="date" type="date"></label>
-    </div>
+            <!-- אזור ייצור השאלות הדינמי -->
+            <div id="tasks"></div>
 
-    <div id="tasks"></div>
+            <!-- כפתורי פעולה עליונים -->
+            <div class="actions">
+                <button class="btn" id="gen">כתבי לי סיכום ושמרי ל-Drive</button>
+                <span id="msg"></span>
+            </div>
+        </div>
 
-    <div class="actions">
-      <button class="btn" id="gen">כתבי לי סיכום</button>
-    </div>
-  </div> 
+        <!-- כרטיס תוצאת הסיכום (מוסתר בהתחלה) -->
+        <div class="card" id="outCard" hidden>
+            <div id="out"></div>
+            <div class="actions">
+                <button class="btn ghost" id="copy">העתקת הטקסט</button>
+                <button class="btn ghost" id="saveDrive">שמירה נוספת ל-Drive</button>
+            </div>
+        </div>
+    </main>
 
-  <!-- תוצאת הסיכום -->
-  <div class="card" id="outCard" hidden>
-    <div id="out"></div>
-    <div class="actions">
-      <button class="btn ghost" id="copy">העתקת הטקסט</button>
-      <button class="btn ghost" id="saveDrive">שמירה ב-Drive</button>
-      <span id="msg"></span>
-    </div>
-  </div>
-</main>
+    <script>
+        // ==============================================
+        // 1. הגדרות בסיס ונתוני השאלון
+        // ==============================================
+        var CLIENT_ID = "844551604468-nia3hpvkl4p664jm9dup1vdl04mev2fk.apps.googleusercontent.com";
+        var LEVELS = [["great", "מצוין"], ["good", "טוב"], ["mid", "בינוני"], ["hard", "קשה"]];
+        var SENS = [["ללא קושי", "לא נצפו קשיים {bl}.", 1], ["קושי קל", "נצפו קשיים קלים {bl}.", -1], ["קושי בולט", "נצפו קשיים בולטים {bl}.", -1]];
 
-<script>
-var CLIENT_ID = "844551604468-nia3hpvkl4p664jm9dup1vdl04mev2fk.apps.googleusercontent.com";
-var LEVELS=[["great","מצוין"],["good","טוב"],["mid","בינוני"],["hard","קשה"]];
-function S(a){return a.map(function(x){return typeof x==="string"?{name:x,y:x,n:x,by:"כן",bn:"לא"}:{name:x[0],y:x[1],n:x[2],by:x[3]||"כן",bn:"לא"}})}
-function G(subs,y,n){return{subs:S(subs),yl:y,nl:n,v:{}}}
-function P(l,t,p){return l.map(function(x){return[x,t,p]})}
-function I(name,o){o=o||{};return{name:name,pick:o.pick,other:o.other,groups:o.groups,rate:o.rate||(!o.pick&&!o.groups),level:"",sel:"",otherText:"",note:""}}
-function R(a){return a.map(function(n){return I(n,{rate:true})})}
-var SENS=[["ללא קושי","לא נצפו קשיים {bl}.",1],["קושי קל","נצפו קשיים קלים {bl}.",-1],["קושי בולט","נצפו קשיים בולטים {bl}.",-1]];
-var domains=[
- {title:"גרפומוטוריקה",items:[
-  I("סוג אחיזה",{pick:P(["Dynamic Tripod","Static Tripod","Dynamic Quadrupod","Static Quadrupod","Palmar Supinate","Digital Pronate"],"נצפתה אחיזה מסוג {opt}.",0),other:"נצפתה אחיזה מסוג {opt}."}),
-  I("ויסות כלי הכתיבה",{rate:true}),
-  I("מנח הגוף",{groups:[G([["ישיבה יציבה","ישיבה יציבה","ישיבה שאינה יציבה"],["מנח כתפיים ומרפקים","מנח תקין של הכתפיים והמרפקים","מנח כתפיים ומרפקים שאינו תקין","תקין","לא תקין"],["ייצוב הדף ביד השנייה","ייצוב הדף ביד השנייה","קושי בייצוב הדף ביד השנייה"],["מנח שורש כף היד והאמה","מנח תקין של שורש כף היד והאמה","מנח שורש כף היד והאמה שאינו תקין"]],"במנח הגוף נצפו {list}.","במנח הגוף נצפו {list}.")]}),
-  I("דומיננטיות",{pick:[["ימין","הדומיננטיות היא של יד ימין",0],["שמאל","הדומיננטיות היא של יד שמאל",0],["טרם התגבשה","דומיננטיות היד טרם התגבשה",0]]}),
-  I("שרטוט צורות",{groups:[G(["קו אופקי","קו אנכי","עיגול","אלכסון מימין","אלכסון משמאל","ריבוע","פלוס","איקס","משולש"],"{N} [הצליח|הצליחה] לשרטט {list}.","{N} [התקשה|התקשתה] בשרטוט {list}.")]}),
-  I("כתיבת שם",{pick:[["עצמאית","כתיבת השם התבצעה באופן עצמאי",1],["בתיווך","כתיבת השם התבצעה בתיווך",-1]],groups:[G([["אותיות מאורגנות","אותיות מאורגנות","אותיות שאינן מאורגנות"],["כיוון כתיבה מימין לשמאל","כיוון כתיבה נכון מימין לשמאל","כיוון כתיבה שאינו נכון"],["סדר האותיות","סדר אותיות נכון","סדר אותיות שאינו נכון"]],"בכתיבת השם נצפו {list}.","בכתיבת השם נצפו {list}.")]}),
-  I("צביעה",{pick:[["מדויקת בתחום","הצביעה הייתה מדויקת ושמרה על גבולות התחום",1],["חורגת מהתחום","בצביעה נצפתה חריגה מגבולות התחום",-1]]}),
-  I("גזירה",{groups:[G(["קו ישר","ריבוע","עיגול"],"{N} [הצליח|הצליחה] לגזור {list}.","{N} [התקשה|התקשתה] בגזירת {list}."),G([["שמירה על רצף","שמירה על רצף הגזירה","קושי בשמירה על רצף הגזירה"],["דיוק","דיוק בגזירה","חוסר דיוק בגזירה"],["שימוש יעיל ביד העזר","שימוש יעיל ביד העזר","שימוש לא יעיל ביד העזר"],["אחיזה נכונה במספריים","אחיזה נכונה במספריים","אחיזה שאינה נכונה במספריים"]],"בגזירה נצפו {list}.","בגזירה נצפו {list}.")]}),
-  I("ציור דמות",{groups:[G([["מספר איברים","מספר איברים מלא","מספר איברים שאינו מלא"],["מיקום האיברים","מיקום נכון של האיברים","מיקום האיברים שאינו נכון"],["פרופורציות","פרופורציות מתאימות","פרופורציות שאינן מתאימות"]],"בציור דמות נצפו {list}.","בציור דמות נצפו {list}.")]})
- ]},
- {title:"מוטוריקה גסה",items:[
-  I("עמידה וקפיצה על רגל אחת",{groups:[G([["עמידה על רגל ימין","עמידה יציבה על רגל ימין","קושי בעמידה על רגל ימין"],["עמידה על רגל שמאל","עמידה יציבה על רגל שמאל","קושי בעמידה על רגל שמאל"],["קפיצה על רגל ימין","קפיצה על רגל ימין","קושי בקפיצה על רגל ימין"],["קפיצה על רגל שמאל","קפיצה על רגל שמאל","קושי בקפיצה על רגל שמאל"],["שמירה על שיווי משקל","שמירה על שיווי משקל","קושי בשמירה על שיווי משקל"]],"בעמידה ובקפיצה על רגל אחת נצפו {list}.","בעמידה ובקפיצה על רגל אחת נצפו {list}.")]}),
-  I("ריצה",{rate:true}),
-  I("קפיצה בשתי רגליים",{groups:[G([["קפיצה מעל מכשול","קפיצה מוצלחת מעל מכשול","קושי בקפיצה מעל מכשול"],["רצף קפיצות","רצף קפיצות שמור","קושי בשמירה על רצף קפיצות"]],"בקפיצה בשתי רגליים נצפו {list}.","בקפיצה בשתי רגליים נצפו {list}.")]}),
-  I("עלייה וירידה במדרגות",{rate:true}),
-  I("התמסרות בכדור",{groups:[G([["זריקה למטרה","זריקה מדויקת למטרה","קושי בזריקה למטרה"],["כיוון","כיוון נכון","קושי בכיוון הזריקה"],["עוצמה","עוצמה מווסתת","קושי בוויסות עוצמת הזריקה"]],"בהתמסרות בכדור נצפו {list}.","בהתמסרות בכדור נצפו {list}.")]}),
-  I("סיבולת",{rate:true})
- ]},
- {title:"תפקודים ניהוליים",items:R(["שמירה על קשב","זיכרון עבודה","עיכוב תגובה","תכנון והתארגנות","בקרה","התמדה"])},
- {title:"עיבוד וויסות חושי",items:["תגובה לרעש","תנועה","ריחות","חיפוש","המנעות","עוררות וויסות"].map(function(n){return I(n,{pick:SENS,other:"בנושא {n} נצפה: {opt}."})})}
-];
-var tEl=document.getElementById("tasks");
-document.getElementById("date").value=new Date().toISOString().slice(0,10);
+        // פונקציות עזר לבניית השאלות
+        function S(a) { return a.map(function (x) { return typeof x === "string" ? { name: x, y: x, n: x, by: "כן", bn: "לא" } : { name: x[0], y: x[1], n: x[2], by: x[3] || "כן", bn: "לא" } }) }
+        function G(subs, y, n) { return { subs: S(subs), yl: y, nl: n, v: {} } }
+        function P(l, t, p) { return l.map(function (x) { return [x, t, p] }) }
+        function I(name, o) { o = o || {}; return { name: name, pick: o.pick, other: o.other, groups: o.groups, rate: o.rate || (!o.pick && !o.groups), level: "", sel: "", otherText: "", note: "" } }
+        function R(a) { return a.map(function (n) { return I(n, { rate: true }) }) }
 
-function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
-function chips(opts,get,set){
-  var w=el("div","seg");
-  function sync(){[].forEach.call(w.children,function(b,i){b.setAttribute("aria-pressed",get()===opts[i])})}
-  opts.forEach(function(o){var b=el("button","",o);b.onclick=function(){set(get()===o?"":o);sync()};w.append(b)});
-  sync();return w;
-}
+        var domains = [
+            {
+                title: "גרפומוטוריקה", items: [
+                    I("סוג אחיזה", { pick: P(["Dynamic Tripod", "Static Tripod", "Dynamic Quadrupod", "Static Quadrupod", "Palmar Supinate", "Digital Pronate"], "נצפתה אחיזה מסוג {opt}.", 0), other: "נצפתה אחיזה מסוג {opt}." }),
+                    I("ויסות כלי הכתיבה", { rate: true }),
+                    I("מנח הגוף", { groups: [G([["ישיבה יציבה", "ישיבה יציבה", "ישיבה שאינה יציבה"], ["מנח כתפיים ומרפקים", "מנח תקין של הכתפיים והמרפקים", "מנח כתפיים ומרפקים שאינו תקין", "תקין", "לא תקין"], ["ייצוב הדף ביד השנייה", "ייצוב הדף ביד השנייה", "קושי בייצוב הדף ביד השנייה"], ["מנח שורש כף היד והאמה", "מנח תקין של שורש כף היד והאמה", "מנח שורש כף היד והאמה שאינו תקין"]], "במנח הגוף נצפו {list}.", "במנח הגוף נצפו {list}.")] }),
+                    I("דומיננטיות", { pick: [["ימין", "הדומיננטיות היא של יד ימין", 0], ["שמאל", "הדומיננטיות היא של יד שמאל", 0], ["טרם התגבשה", "דומיננטיות היד טרם התגבשה", 0]] }),
+                    I("שרטוט צורות", { groups: [G(["קו אופקי", "קו אנכי", "עיגול", "אלכסון מימין", "אלכסון משמאל", "ריבוע", "פלוס", "איקס", "משולש"], "{N} [הצליח|הצליחה] לשרטט {list}.", "{N} [התקשה|התקשתה] בשרטוט {list}.")] }),
+                    I("כתיבת שם", { pick: [["עצמאית", "כתיבת השם התבצעה באופן עצמאי", 1], ["בתיווך", "כתיבת השם התבצעה בתיווך", -1]], groups: [G([["אותיות מאורגנות", "אותיות מאורגנות", "אותיות שאינן מאורגנות"], ["כיוון כתיבה מימין לשמאל", "כיוון כתיבה נכון מימין לשמאל", "כיוון כתיבה שאינו נכון"], ["סדר האותיות", "סדר אותיות נכון", "סדר אותיות שאינו נכון"]], "בכתיבת השם נצפו {list}.", "בכתיבת השם נצפו {list}.")] }),
+                    I("צביעה", { pick: [["מדויקת בתחום", "הצביעה הייתה מדויקת ושמרה על גבולות התחום", 1], ["חורגת מהתחום", "בצביעה נצפתה חריגה מגבולות התחום", -1]] }),
+                    I("גזירה", { groups: [G(["קו ישר", "ריבוע", "עיגול"], "{N} [הצליח|הצליחה] לגזור {list}.", "{N} [התקשה|התקשתה] בגזירת {list}."), G([["שמירה על רצף", "שמירה על רצף הגזירה", "קושי בשמירה על רצף הגזירה"], ["דיוק", "דיוק בגזירה", "חוסר דיוק בגזירה"], ["שימוש יעיל ביד העזר", "שימוש יעיל ביד העזר", "שימוש לא יעיל ביד העזר"], ["אחיזה נכונה במספריים", "אחיזה נכונה במספריים", "אחיזה שאינה נכונה במספריים"]], "בגזירה נצפו {list}.", "בגזירה נצפו {list}.")] }),
+                    I("ציור דמות", { groups: [G([["מספר איברים", "מספר איברים מלא", "מספר איברים שאינו מלא"], ["מיקום האיברים", "מיקום נכון של האיברים", "מיקום האיברים שאינו נכון"], ["פרופורציות", "פרופורציות מתאימות", "פרופורציות שאינן מתאימות"]], "בציור דמות נצפו {list}.", "בציור דמות נצפו {list}.")] })
+                ]
+            },
+            {
+                title: "מוטוריקה גסה", items: [
+                    I("עמידה וקפיצה על רגל אחת", { groups: [G([["עמידה על רגל ימין", "עמידה יציבה על רגל ימין", "קושי בעמידה על רגל ימין"], ["עמידה על רגל שמאל", "עמידה יציבה על רגל שמאל", "קושי בעמידה על רגל שמאל"], ["קפיצה על רגל ימין", "קפיצה על רגל ימין", "קושי בקפיצה על רגל ימין"], ["קפיצה על רגל שמאל", "קפיצה על רגל שמאל", "קושי בקפיצה על רגל שמאל"], ["שמירה על שיווי משקל", "שמירה על שיווי משקל", "קושי בשמירה על שיווי משקל"]], "בעמידה ובקפיצה על רגל אחת נצפו {list}.", "בעמידה ובקפיצה על רגל אחת נצפו {list}.")] }),
+                    I("ריצה", { rate: true }),
+                    I("קפיצה בשתי רגליים", { groups: [G([["קפיצה מעל מכשול", "קפיצה מוצלחת מעל מכשול", "קושי בקפיצה מעל מכשול"], ["רצף קפיצות", "רצף קפיצות שמור", "קושי בשמירה על רצף קפיצות"]], "בקפיצה בשתי רגליים נצפו {list}.", "בקפיצה בשתי רגליים נצפו {list}.")] }),
+                    I("עלייה וירידה במדרגות", { rate: true }),
+                    I("התמסרות בכדור", { groups: [G([["זריקה למטרה", "זריקה מדויקת למטרה", "קושי בזריקה למטרה"], ["כיוון", "כיוון נכון", "קושי בכיוון הזריקה"], ["עוצמה", "עוצמה מווסתת", "קושי בוויסות עוצמת הזריקה"]], "בהתמסרות בכדור נצפו {list}.", "בהתמסרות בכדור נצפו {list}.")] }),
+                    I("סיבולת", { rate: true })
+                ]
+            },
+            { title: "תפקודים ניהוליים", items: R(["שמירה על קשב", "זיכרון עבודה", "עיכוב תגובה", "תכנון והתארגנות", "בקרה", "התמדה"]) },
+            { title: "עיבוד וויסות חושי", items: ["תגובה לרעש", "תנועה", "ריחות", "חיפוש", "המנעות", "עוררות וויסות"].map(function (n) { return I(n, { pick: SENS, other: "בנושא {n} נצפה: {opt}." }) }) }
+        ];
 
-function render(){
-  tEl.innerHTML="";
-  domains.forEach(function(d){
-    var sec=el("section","dom");sec.append(el("h2","",d.title));
-    d.items.forEach(function(t,i){
-      var c=el("div","card"),h=el("div","task-head");
-      var inp=el("input");inp.value=t.name;inp.setAttribute("aria-label","שם הפריט");inp.oninput=function(){t.name=inp.value};
-      var x=el("button","x","×");x.title="מחיקת פריט";x.onclick=function(){d.items.splice(i,1);render()};
-      h.append(inp,x);c.append(h);
-      if(t.pick){
-        var opts=t.pick.map(function(p){return p[0]}).concat(t.other?["אחר"]:[]);
-        var oi=el("input");oi.placeholder="פרטי כאן";oi.value=t.otherText;oi.hidden=t.sel!=="אחר";oi.oninput=function(){t.otherText=oi.value};
-        c.append(chips(opts,function(){return t.sel},function(v){t.sel=v;oi.hidden=v!=="אחר"}),oi);
-      }
-      (t.groups||[]).forEach(function(g){
-        g.subs.forEach(function(sb){
-          var r=el("div","sub");r.append(el("span","",sb.name));
-          r.append(chips([sb.by,sb.bn],function(){return g.v[sb.name]==="y"?sb.by:g.v[sb.name]==="n"?sb.bn:""},function(v){g.v[sb.name]=v===sb.by?"y":v===sb.bn?"n":""}));
-          c.append(r);
-        });
-      });
-      if(t.rate)c.append(chips(LEVELS.map(function(l){return l[1]}),function(){var l=LEVELS.filter(function(l){return l[0]===t.level})[0];return l?l[1]:""},function(v){var l=LEVELS.filter(function(l){return l[1]===v})[0];t.level=l?l[0]:""}));
-      var ta=el("textarea");ta.placeholder="הערה (לא חובה)";ta.value=t.note;ta.oninput=function(){t.note=ta.value};
-      c.append(ta);sec.append(c);
-    });
-    var add=el("button","btn ghost","+ הוספת פריט ל"+d.title);
-    add.onclick=function(){d.items.push(I("",{rate:true}));render()};
-    sec.append(add);tEl.append(sec);
-  });
-}
-render();
+        // ==============================================
+        // 2. רינדור הממשק
+        // ==============================================
+        var tEl = document.getElementById("tasks");
+        document.getElementById("date").value = new Date().toISOString().slice(0, 10);
 
-// 1. ניהול כניסה והצגת האפליקציה
-let googleAccessToken = null;
-function handleCredentialResponse(response) {
-  googleAccessToken = response.credential;
-  document.getElementById("login_area").hidden = true;
-  document.getElementById("main_app").hidden = false;
-}
-
-// 2. הפקת סיכום מול שרת ה-C# בלחיצה
-document.getElementById("gen").onclick = async function() {
-  const btn = document.getElementById("gen");
-  const out = document.getElementById("out");
-  const card = document.getElementById("outCard");
-  const apiUrl = "https://yaelclinicapi.onrender.com/api/Diagnosis/generate-report"; 
-
-  btn.disabled = true;
-  const originalBtnText = btn.innerText;
-  btn.innerText = "מפיק סיכום... אנא המתן";
-  
-  card.hidden = false;
-  out.innerText = "מנתח את הנתונים ומפיק דוח (זה עשוי לקחת מספר שניות)...";
-
-  var reportData = {
-    "שם הילד": document.getElementById("name").value || "ללא שם",
-    "מין": document.getElementById("gender").value === "m" ? "בן" : "בת",
-    "תאריך לידה": document.getElementById("bdate").value,
-    "תאריך אבחון": document.getElementById("date").value,
-    "מדדים": []
-  };
-
-  domains.forEach(function(dm) {
-    dm.items.forEach(function(t) {
-      if (t.name.trim()) {
-        let details = "";
-        if (t.sel) details += "בחירה: " + (t.sel === "אחר" ? t.otherText : t.sel) + ". ";
-        if (t.level) details += "רמה: " + t.level + ". ";
-        if (t.note) details += "הערות: " + t.note;
-
-        if (details.length > 0) {
-          reportData["מדדים"].push({ "תחום": dm.title, "מיומנות": t.name, "פירוט": details });
+        function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x !== undefined) e.textContent = x; return e }
+        function chips(opts, get, set) {
+            var w = el("div", "seg");
+            function sync() { [].forEach.call(w.children, function (b, i) { b.setAttribute("aria-pressed", get() === opts[i]) }) }
+            opts.forEach(function (o) { var b = el("button", "", o); b.onclick = function () { set(get() === o ? "" : o); sync() }; w.append(b) });
+            sync(); return w;
         }
-      }
-    });
-  });
 
-  try {
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reportData)
-    });
-
-    if (!response.ok) {
-      throw new Error("שגיאה בשרת (" + response.status + ")");
-    }
-
-    const jsonResponse = await response.json();
-    const geminiText = jsonResponse.candidates[0].content.parts[0].text;
-    out.innerText = geminiText;
-
-  } catch (error) {
-    out.innerText = "אירעה שגיאה בעת הפקת הסיכום: " + error.message;
-  } finally {
-    btn.disabled = false;
-    btn.innerText = originalBtnText;
-  }
-};
-
-// 3. העתקת טקסט
-document.getElementById("copy").onclick = function(){
-  var txt = document.getElementById("out").innerText, msg = document.getElementById("msg");
-  function ok(){ msg.textContent = "הועתק ✓"; setTimeout(function(){ msg.textContent = "" }, 2000); }
-  function fb(){ var r = document.createRange(); r.selectNodeContents(document.getElementById("out")); var se = getSelection(); se.removeAllRanges(); se.addRange(r); msg.textContent = "הטקסט מסומן, אפשר להעתיק ידנית"; }
-  try{ navigator.clipboard.writeText(txt).then(ok, fb); } catch(e){ fb(); }
-};
-
-// 4. מנגנון שמירה ב-Google Drive
-let driveTokenClient = null;
-let driveAccessToken = null;
-
-function initDriveAuth() {
-  if (window.google && google.accounts && google.accounts.oauth2) {
-    driveTokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: CLIENT_ID,
-      scope: 'https://www.googleapis.com/auth/drive.file',
-      callback: (response) => {
-        if (response.access_token) {
-          driveAccessToken = response.access_token;
-          executeUploadToDrive();
-        } else {
-          document.getElementById("msg").innerText = "לא התקבל אישור גישה ל-Drive.";
+        function render() {
+            tEl.innerHTML = "";
+            domains.forEach(function (d) {
+                var sec = el("section", "dom"); sec.append(el("h2", "", d.title));
+                d.items.forEach(function (t, i) {
+                    var c = el("div", "card"), h = el("div", "task-head");
+                    var inp = el("input"); inp.value = t.name; inp.setAttribute("aria-label", "שם הפריט"); inp.oninput = function () { t.name = inp.value };
+                    var x = el("button", "x", "×"); x.title = "מחיקת פריט"; x.onclick = function () { d.items.splice(i, 1); render() };
+                    h.append(inp, x); c.append(h);
+                    if (t.pick) {
+                        var opts = t.pick.map(function (p) { return p[0] }).concat(t.other ? ["אחר"] : []);
+                        var oi = el("input"); oi.placeholder = "פרטי כאן"; oi.value = t.otherText; oi.hidden = t.sel !== "אחר"; oi.oninput = function () { t.otherText = oi.value };
+                        c.append(chips(opts, function () { return t.sel }, function (v) { t.sel = v; oi.hidden = v !== "אחר" }), oi);
+                    }
+                    (t.groups || []).forEach(function (g) {
+                        g.subs.forEach(function (sb) {
+                            var r = el("div", "sub"); r.append(el("span", "", sb.name));
+                            r.append(chips([sb.by, sb.bn], function () { return g.v[sb.name] === "y" ? sb.by : g.v[sb.name] === "n" ? sb.bn : "" }, function (v) { g.v[sb.name] = v === sb.by ? "y" : v === sb.bn ? "n" : "" }));
+                            c.append(r);
+                        });
+                    });
+                    if (t.rate) c.append(chips(LEVELS.map(function (l) { return l[1] }), function () { var l = LEVELS.filter(function (l) { return l[0] === t.level })[0]; return l ? l[1] : "" }, function (v) { var l = LEVELS.filter(function (l) { return l[1] === v })[0]; t.level = l ? l[0] : "" }));
+                    var ta = el("textarea"); ta.placeholder = "הערה (לא חובה)"; ta.value = t.note; ta.oninput = function () { t.note = ta.value };
+                    c.append(ta); sec.append(c);
+                });
+                var add = el("button", "btn ghost", "+ הוספת פריט ל" + d.title);
+                add.onclick = function () { d.items.push(I("", { rate: true })); render() };
+                sec.append(add); tEl.append(sec);
+            });
         }
-      },
-    });
-  }
-}
+        render();
 
-window.addEventListener("load", function() {
-  setTimeout(initDriveAuth, 500);
-});
+        // ==============================================
+        // 3. יצירת סיכום גנרי (Fallback)
+        // ==============================================
+        function calculateAge(bdate, diagDate) {
+            if (!bdate) return "";
+            var b = new Date(bdate), d = new Date(diagDate || new Date());
+            var m = (d.getFullYear() - b.getFullYear()) * 12 + (d.getMonth() - b.getMonth());
+            if (d.getDate() < b.getDate()) m--;
+            var y = Math.floor(m / 12), remM = m % 12;
+            return y + " שנים ו-" + remM + " חודשים";
+        }
 
-document.getElementById("saveDrive").onclick = function() {
-  var txt = document.getElementById("out").innerText;
-  if (!txt.trim()) {
-    alert("אין תוכן לשמירה. הפיקי סיכום תחילה.");
-    return;
-  }
+        function generateGenericReport(data) {
+            var age = calculateAge(data["תאריך לידה"], data["תאריך אבחון"]);
+            var header = "סיכום אבחון בריפוי בעיסוק\n";
+            header += "שם: " + data["שם הילד"] + "\n";
+            header += "מין: " + data["מין"] + "\n";
+            if (age) header += "גיל בזמן האבחון: " + age + "\n";
+            header += "תאריך אבחון: " + data["תאריך אבחון"] + "\n\n";
 
-  if (!driveAccessToken) {
-    if (!driveTokenClient) initDriveAuth();
-    if (driveTokenClient) {
-      driveTokenClient.requestAccessToken();
-    } else {
-      alert("ספריית גוגל עדיין לא נטענה בדפדפן. נסי שוב עוד רגע.");
-    }
-  } else {
-    executeUploadToDrive();
-  }
-};
+            var domainsMap = {};
+            data["מדדים"].forEach(function (m) {
+                if (!domainsMap[m["תחום"]]) domainsMap[m["תחום"]] = [];
+                domainsMap[m["תחום"]].push("- " + m["מיומנות"] + ": " + m["פירוט"]);
+            });
 
-async function executeUploadToDrive() {
-  const txt = document.getElementById("out").innerText;
-  const nm = document.getElementById("name").value.trim() || "ללא_שם";
-  const dt = document.getElementById("date").value || new Date().toISOString().slice(0,10);
-  const title = "סיכום_אבחון_" + nm + "_" + dt + ".txt";
-  const msg = document.getElementById("msg");
+            var body = "";
+            for (var dom in domainsMap) {
+                body += dom + ":\n"; // כותרת נקייה ללא סולמיות
+                body += domainsMap[dom].join("\n") + "\n\n";
+            }
 
-  msg.innerText = "שומר ב-Google Drive...";
+            if (!body) body = "לא סומנו מדדים במהלך האבחון.";
+            return header + body;
+        }
 
-  const metadata = {
-    name: title,
-    mimeType: 'text/plain'
-  };
+        // ==============================================
+        // 4. ניהול הרשאות Google Drive
+        // ==============================================
+        let driveTokenClient = null;
+        let driveAccessToken = null;
 
-  const form = new FormData();
-  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-  form.append('file', new Blob([txt], { type: 'text/plain;charset=utf-8' }));
+        function ensureDriveToken() {
+            return new Promise(function (resolve, reject) {
+                if (driveAccessToken) return resolve(driveAccessToken);
+                if (!window.google || !google.accounts || !google.accounts.oauth2) {
+                    return reject(new Error("ספריית ההתחברות של Google לא נטענה"));
+                }
+                driveTokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: 'https://www.googleapis.com/auth/drive.file',
+                    callback: function (resp) {
+                        if (resp.access_token) {
+                            driveAccessToken = resp.access_token;
+                            resolve(driveAccessToken);
+                        } else {
+                            reject(new Error("לא התקבל אישור גישה ל-Drive"));
+                        }
+                    }
+                });
+                driveTokenClient.requestAccessToken();
+            });
+        }
 
-  try {
-    const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + driveAccessToken },
-      body: form
-    });
+        // ==============================================
+        // 5. הפקת דוח (AI או גנרי) ושמירה ל-Docs
+        // ==============================================
+        document.getElementById("gen").onclick = async function () {
+            const btn = document.getElementById("gen");
+            const out = document.getElementById("out");
+            const card = document.getElementById("outCard");
+            const msg = document.getElementById("msg");
+            const apiUrl = "https://yaelclinicapi.onrender.com/api/Diagnosis/generate-report";
 
-    if (res.ok) {
-      msg.innerText = "✓ הקובץ נשמר בהצלחה ב-Drive!";
-    } else {
-      msg.innerText = "שגיאה בשמירה ל-Drive (" + res.status + ")";
-    }
-  } catch (err) {
-    msg.innerText = "תקלה בתקשורת מול Drive.";
-  }
-}
-</script>
+            // נעילת הכפתור ומעבר למצב המתנה
+            btn.disabled = true;
+            const originalBtnText = btn.innerText;
+            btn.innerText = "מעבד ושומר...";
+            card.hidden = false;
+            out.innerText = "מתחבר ל-Google Drive ומפיק סיכום...";
+            msg.innerText = "";
+
+            // איסוף הנתונים מהטופס
+            var reportData = {
+                "שם הילד": document.getElementById("name").value.trim() || "ללא שם",
+                "מין": document.getElementById("gender").value === "m" ? "בן" : "בת",
+                "תאריך לידה": document.getElementById("bdate").value,
+                "תאריך אבחון": document.getElementById("date").value,
+                "מדדים": []
+            };
+
+            domains.forEach(function (dm) {
+                dm.items.forEach(function (t) {
+                    if (t.name.trim()) {
+                        let details = "";
+                        if (t.sel) details += "בחירה: " + (t.sel === "אחר" ? t.otherText : t.sel) + ". ";
+                        if (t.level) {
+                            var levHeb = LEVELS.find(function (l) { return l[0] === t.level });
+                            details += "רמה: " + (levHeb ? levHeb[1] : t.level) + ". ";
+                        }
+                        if (t.groups) {
+                            t.groups.forEach(function (g) {
+                                var selected = [];
+                                g.subs.forEach(function (sb) {
+                                    if (g.v[sb.name] === "y") selected.push(sb.y);
+                                    else if (g.v[sb.name] === "n") selected.push(sb.n);
+                                });
+                                if (selected.length) details += selected.join(", ") + ". ";
+                            });
+                        }
+                        if (t.note) details += "הערות: " + t.note;
+
+                        if (details.length > 0) {
+                            reportData["מדדים"].push({ "תחום": dm.title, "מיומנות": t.name, "פירוט": details });
+                        }
+                    }
+                });
+            });
+
+            // שלב א': בקשת אישור מול גוגל דרייב לפני התחלת הפקת הדוח
+            try {
+                await ensureDriveToken();
+            } catch (authErr) {
+                out.innerText = "הפקת הדוח בוטלה: יש לאשר גישה ל-Google Drive לשמירת הדוח.";
+                btn.disabled = false;
+                btn.innerText = originalBtnText;
+                return;
+            }
+
+            // שלב ב': פנייה לשרת ה-AI של C#
+            let finalReportText = "";
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(reportData)
+                });
+
+                if (!response.ok) throw new Error("HTTP " + response.status);
+
+                const jsonResponse = await response.json();
+                let rawText = jsonResponse.candidates[0].content.parts[0].text;
+
+                // ניקוי כוכביות Markdown מתשובת ה-AI כדי שהטקסט ייראה נקי
+                finalReportText = rawText.replace(/\*\*/g, '').replace(/\*/g, '-');
+            }
+            // שלב ג': נסיגה לסיכום מובנה (Fallback) במקרה של שגיאת עומס בשרת
+            catch (error) {
+                finalReportText = generateGenericReport(reportData);
+                msg.innerText = "הערה: הופק סיכום מובנה עקב עומס בשרת ה-AI.";
+            }
+
+            // הצגת התוצאה למסך
+            out.innerText = finalReportText;
+
+            // שלב ד': שמירת הקובץ כ-Google Docs בדרייב
+            await executeUploadToDrive(finalReportText);
+
+            // החזרת הכפתור למצב פעיל
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
+        };
+
+        // ==============================================
+        // 6. פונקציית שמירה ל-Google Docs
+        // ==============================================
+        async function executeUploadToDrive(txtContent) {
+            const txt = txtContent || document.getElementById("out").innerText;
+            const nm = document.getElementById("name").value.trim() || "ללא_שם";
+            const dt = document.getElementById("date").value || new Date().toISOString().slice(0, 10);
+            const title = "סיכום_אבחון_" + nm + "_" + dt;
+            const msg = document.getElementById("msg");
+
+            msg.innerText = (msg.innerText ? msg.innerText + " " : "") + "ממיר ושומר ב-Docs...";
+
+            // ציון MIME Type של מסמך Google Docs ולא טקסט רגיל
+            const metadata = {
+                name: title,
+                mimeType: 'application/vnd.google-apps.document'
+            };
+
+            const form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+            // מעבירים את הטקסט למנוע ההמרה של גוגל
+            form.append('file', new Blob([txt], { type: 'text/plain;charset=utf-8' }));
+
+            try {
+                const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + driveAccessToken },
+                    body: form
+                });
+
+                if (res.ok) {
+                    msg.innerText = "✓ הדוח נשמר בהצלחה כקובץ Google Docs!";
+                } else {
+                    msg.innerText = "שגיאה בשמירה ל-Docs (" + res.status + ")";
+                }
+            } catch (err) {
+                msg.innerText = "תקלה בתקשורת מול Drive.";
+            }
+        }
+
+        // כפתורי שמירה נוספת והעתקה
+        document.getElementById("saveDrive").onclick = function () {
+            executeUploadToDrive();
+        };
+
+        document.getElementById("copy").onclick = function () {
+            var txt = document.getElementById("out").innerText, msg = document.getElementById("msg");
+            navigator.clipboard.writeText(txt).then(function () {
+                msg.textContent = "הטקסט הועתק ללוח ✓";
+                setTimeout(function () { msg.textContent = "" }, 2500);
+            });
+        };
+    </script>
 </body>
 </html>
