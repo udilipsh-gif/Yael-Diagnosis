@@ -382,7 +382,7 @@
             <div id="out"></div>
             <div class="actions">
                 <button class="btn ghost" id="copy">העתקת הטקסט</button>
-                <button class="btn ghost" id="saveDrive">שמירה נוספת ל-Drive</button>
+                <button class="btn ghost" id="saveDrive">שמירה ל-Drive</button>
             </div>
         </div>
     </main>
@@ -611,7 +611,7 @@
 
                 // ניקוי כוכביות ותוספת חיווי מודל AI
                 finalReportText = rawText.replace(/\*\*/g, '').replace(/\*/g, '-');
-                finalReportText += "\n\n-------------------\n[הדוח נוסח על ידי בינה מלאכותית]";
+                finalReportText += "\n\n-------------------\n[הדוח נוסח על ידי LLM]";
             }
             catch (error) {
                 // נסיגה לסיכום הגנרי במקרה של שגיאה ותוספת חיווי מתאים
