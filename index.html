@@ -6,7 +6,7 @@
     <title>צ'קליסט אבחון לגיל הגן</title>
     <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        
+
         :root {
             --bg: #f5f4f1;
             --card: rgba(255,255,255,.74);
@@ -541,7 +541,7 @@
         }
 
         // ==============================================
-        // 5. הפקת דוח (AI או גנרי) ושמירה ל-Docs
+        // 5. הפקת דוח (AI או גנרי) - ללא בקשת דרייב!
         // ==============================================
         document.getElementById("gen").onclick = async function () {
             const btn = document.getElementById("gen");
@@ -553,9 +553,9 @@
             // נעילת הכפתור ומעבר למצב המתנה
             btn.disabled = true;
             const originalBtnText = btn.innerText;
-            btn.innerText = "מעבד ושומר...";
+            btn.innerText = "מעבד נתונים...";
             card.hidden = false;
-            out.innerText = "מתחבר ל-Google Drive ומפיק סיכום...";
+            out.innerText = "מפיק סיכום, אנא המתן...";
             msg.innerText = "";
 
             // איסוף הנתונים מהטופס
@@ -595,19 +595,9 @@
                 });
             });
 
-            // שלב א': בקשת אישור מול גוגל דרייב לפני התחלת הפקת הדוח
-            try {
-                await ensureDriveToken();
-            } catch (authErr) {
-                out.innerText = "הפקת הדוח בוטלה: יש לאשר גישה ל-Google Drive לשמירת הדוח.";
-                btn.disabled = false;
-                btn.innerText = originalBtnText;
-                return;
-            }
-
-            // שלב ב': פנייה לשרת ה-AI של C#
             let finalReportText = "";
             try {
+                // פנייה לשרת ה-AI
                 const response = await fetch(apiUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -619,20 +609,18 @@
                 const jsonResponse = await response.json();
                 let rawText = jsonResponse.candidates[0].content.parts[0].text;
 
-                // ניקוי כוכביות Markdown מתשובת ה-AI כדי שהטקסט ייראה נקי
+                // ניקוי כוכביות ותוספת חיווי מודל AI
                 finalReportText = rawText.replace(/\*\*/g, '').replace(/\*/g, '-');
+                finalReportText += "\n\n-------------------\n[הדוח נוסח על ידי בינה מלאכותית]";
             }
-            // שלב ג': נסיגה לסיכום מובנה (Fallback) במקרה של שגיאת עומס בשרת
             catch (error) {
+                // נסיגה לסיכום הגנרי במקרה של שגיאה ותוספת חיווי מתאים
                 finalReportText = generateGenericReport(reportData);
-                msg.innerText = "הערה: הופק סיכום מובנה עקב עומס בשרת ה-AI.";
+                finalReportText += "\n\n-------------------\n[הדוח הופק בתבנית גיבוי גנרית עקב חוסר זמינות של השרת]";
             }
 
-            // הצגת התוצאה למסך
+            // הצגת התוצאה למסך (עדיין לא שומרים לדרייב)
             out.innerText = finalReportText;
-
-            // שלב ד': שמירת הקובץ כ-Google Docs בדרייב
-            await executeUploadToDrive(finalReportText);
 
             // החזרת הכפתור למצב פעיל
             btn.disabled = false;
@@ -651,7 +639,6 @@
 
             msg.innerText = (msg.innerText ? msg.innerText + " " : "") + "ממיר ושומר ב-Docs...";
 
-            // ציון MIME Type של מסמך Google Docs ולא טקסט רגיל
             const metadata = {
                 name: title,
                 mimeType: 'application/vnd.google-apps.document'
@@ -659,7 +646,6 @@
 
             const form = new FormData();
             form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-            // מעבירים את הטקסט למנוע ההמרה של גוגל
             form.append('file', new Blob([txt], { type: 'text/plain;charset=utf-8' }));
 
             try {
@@ -679,9 +665,18 @@
             }
         }
 
-        // כפתורי שמירה נוספת והעתקה
-        document.getElementById("saveDrive").onclick = function () {
-            executeUploadToDrive();
+        // ==============================================
+        // 7. כפתורי שמירה נוספת והעתקה
+        // ==============================================
+        document.getElementById("saveDrive").onclick = async function () {
+            const msg = document.getElementById("msg");
+            try {
+                msg.innerText = "מוודא חיבור ל-Drive...";
+                await ensureDriveToken(); // בקשת ההרשאה מוקפצת רק כאן
+                await executeUploadToDrive();
+            } catch (err) {
+                msg.innerText = "השמירה בוטלה: לא ניתן אישור להתחבר ל-Google Drive.";
+            }
         };
 
         document.getElementById("copy").onclick = function () {
@@ -693,4 +688,4 @@
         };
     </script>
 </body>
-</html>
+</html>     
