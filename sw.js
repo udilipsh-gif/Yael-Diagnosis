@@ -3,7 +3,7 @@ const CACHE_NAME = 'yael-clinic-v5';
 const urlsToCache = [
     './index.html',
     './manifest.json',
-    './images/main_logo.jpg' // <-- כאן שמים את הנתיב לתמונה המעודכנת
+    './images/main_logo.png' // <-- כאן שמים את הנתיב לתמונה המעודכנת
 ];
 
 // שלב ההתקנה: שומר את הקבצים ומודיע לדפדפן להפעיל את הגרסה החדשה מיד
