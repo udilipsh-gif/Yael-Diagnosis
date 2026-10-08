@@ -1,8 +1,9 @@
 // בכל פעם שאתה מעלה עדכון קוד ל-GitHub, שנה את המספר כאן (למשל ל-v2, v3)
-const CACHE_NAME = 'yael-clinic-v3'; 
+const CACHE_NAME = 'yael-clinic-v5';
 const urlsToCache = [
-  './index.html',
-  './manifest.json'
+    './index.html',
+    './manifest.json',
+    './images/main_logo.jpg' // <-- כאן שמים את הנתיב לתמונה המעודכנת
 ];
 
 // שלב ההתקנה: שומר את הקבצים ומודיע לדפדפן להפעיל את הגרסה החדשה מיד
