@@ -1,5 +1,5 @@
 // בכל פעם שאתה מעלה עדכון קוד ל-GitHub, שנה את המספר כאן (למשל ל-v2, v3)
-const CACHE_NAME = 'yael-clinic-v1'; 
+const CACHE_NAME = 'yael-clinic-v2'; 
 const urlsToCache = [
   './index.html',
   './manifest.json'

@@ -8,7 +8,8 @@
   "icons": [
     {
       //"src": "https://cdn-icons-png.flaticon.com/512/3004/3004458.png",
-      "src": "./images/logo_temp.png",
+     // "src": "./images/logo_temp.png",
+      "src": "./images/main_logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
