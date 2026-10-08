@@ -1,0 +1,15 @@
+{
+  "name": "אבחון ריפוי בעיסוק",
+  "short_name": "אבחון",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f4f1",
+  "theme_color": "#467f5f",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3004/3004458.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
